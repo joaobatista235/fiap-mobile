@@ -1,0 +1,51 @@
+# ===== Node =====
+node_modules/
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# ===== TypeScript =====
+*.tsbuildinfo
+
+# ===== Build output =====
+dist/
+build/
+
+# ===== Test coverage =====
+coverage/
+
+# ===== Environment / secrets =====
+.env
+.env.*
+!.env.example
+
+# ===== Expo / React Native =====
+.expo/
+web-build/
+expo-env.d.ts
+.metro-health-check*
+
+# Native signing & keys
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# Generated native folders
+/mobile/ios
+/mobile/android
+.kotlin/
+
+# ===== OS =====
+.DS_Store
+*.pem
+Thumbs.db
+
+# ===== Editors =====
+.vscode/
+.idea/
+*.swp
+*.swo
+.claude
