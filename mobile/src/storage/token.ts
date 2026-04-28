@@ -1,8 +1,8 @@
 import * as SecureStore from "expo-secure-store";
 
 const KEYS = {
-  TOKEN: "auth:token",
-  USER: "auth:user",
+  TOKEN: "auth_token",
+  USER: "auth_user",
 } as const;
 
 // Token em memória para acesso síncrono nos interceptors do axios.

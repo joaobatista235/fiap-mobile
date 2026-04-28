@@ -40,14 +40,19 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   // Restaura sessão persistida ao iniciar o app.
   useEffect(() => {
-    tokenStorage.restoreSession().then(({ token, userJson }) => {
-      if (token && userJson) {
-        const user = JSON.parse(userJson) as User;
-        setState({ user, token, isAuthenticated: true, isLoading: false });
-      } else {
+    tokenStorage
+      .restoreSession()
+      .then(({ token, userJson }) => {
+        if (token && userJson) {
+          const user = JSON.parse(userJson) as User;
+          setState({ user, token, isAuthenticated: true, isLoading: false });
+        } else {
+          setState((prev) => ({ ...prev, isLoading: false }));
+        }
+      })
+      .catch(() => {
         setState((prev) => ({ ...prev, isLoading: false }));
-      }
-    });
+      });
   }, []);
 
   const signIn = useCallback(async (token: string, user: User) => {
