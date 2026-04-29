@@ -31,21 +31,27 @@ else
     warn "Pulado (Docker não disponível)."
 fi
 
-# ── Helper: remove diretório via PowerShell (permissões Windows) ──────────────
+# ── Helper: remove diretório via cmd.exe (mais robusto que Remove-Item) ───────
+# Mata processos node.exe antes para liberar arquivos .node travados,
+# depois usa "rd /s /q" que ignora locks melhor que PowerShell Remove-Item.
 remove_dir_win() {
     local dir="$1"
     local label="$2"
+
     if [ ! -d "$dir" ]; then
         warn "$label não encontrado, pulando."
         return
     fi
-    if command -v powershell.exe &>/dev/null; then
-        local win_path
-        win_path=$(wslpath -w "$dir")
-        powershell.exe -NoProfile -Command "Remove-Item -Recurse -Force '$win_path'"
-    else
-        rm -rf "$dir"
-    fi
+
+    local win_path
+    win_path=$(wslpath -w "$dir")
+
+    # Encerra processos node que possam estar bloqueando arquivos nativos
+    cmd.exe /c "taskkill /F /IM node.exe /T" 2>/dev/null || true
+
+    # rd /s /q é o mais confiável no Windows para remoção recursiva forçada
+    cmd.exe /c "rd /s /q \"$win_path\""
+
     ok "$label removido."
 }
 
