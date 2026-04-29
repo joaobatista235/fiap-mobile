@@ -14,7 +14,6 @@ export interface UpdateTeacherPayload {
 }
 
 export const UserService = {
-  // Retorna todos os usuários — filtramos ADMIN no hook.
   getAll(): Promise<TeacherUser[]> {
     return api.get<TeacherUser[]>("/users").then((r) => r.data);
   },
@@ -23,14 +22,12 @@ export const UserService = {
     return api.get<TeacherUser>(`/users/${id}`).then((r) => r.data);
   },
 
-  // Cria com role ADMIN (professor).
   create(payload: CreateTeacherPayload): Promise<TeacherUser> {
     return api
       .post<TeacherUser>("/users", { ...payload, role: "ADMIN" })
       .then((r) => r.data);
   },
 
-  // Cria com role USER (aluno).
   createStudent(payload: CreateTeacherPayload): Promise<TeacherUser> {
     return api
       .post<TeacherUser>("/users", { ...payload, role: "USER" })

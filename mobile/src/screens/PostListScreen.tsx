@@ -24,7 +24,6 @@ export default function PostListScreen() {
 
   const isAdmin = user?.role === "ADMIN";
 
-  // Recarrega a lista sempre que a tela entra em foco.
   useFocusEffect(
     useCallback(() => {
       refresh();
@@ -33,10 +32,10 @@ export default function PostListScreen() {
 
   const filtered = query.trim()
     ? posts.filter(
-        (p) =>
-          p.title.toLowerCase().includes(query.toLowerCase()) ||
-          p.content.toLowerCase().includes(query.toLowerCase())
-      )
+      (p) =>
+        p.title.toLowerCase().includes(query.toLowerCase()) ||
+        p.content.toLowerCase().includes(query.toLowerCase())
+    )
     : posts;
 
   const handleSignOut = () => {

@@ -7,7 +7,6 @@ export interface User {
   role: UserRole;
 }
 
-// Perfil completo retornado pelo /users (inclui createdAt)
 export interface TeacherUser {
   id: string;
   name: string;

@@ -17,7 +17,6 @@ import { UserService } from "@/src/api/users";
 import type { UpdateTeacherPayload } from "@/src/api/users";
 
 interface Props {
-  /** ID do aluno a editar. Undefined = modo criação. */
   studentId?: string;
 }
 

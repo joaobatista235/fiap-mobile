@@ -5,17 +5,13 @@ const KEYS = {
   USER: "auth_user",
 } as const;
 
-// Token em memória para acesso síncrono nos interceptors do axios.
 let _token: string | null = null;
 
-// Callback registrado pelo AuthContext para logout automático no 401.
 let _onForceLogout: (() => void) | null = null;
 
 export const tokenStorage = {
-  // --- Síncrono (interceptor) ---
   getToken: () => _token,
 
-  // --- Registro do callback de logout forçado ---
   registerLogoutCallback: (cb: () => void) => {
     _onForceLogout = cb;
   },
@@ -23,7 +19,6 @@ export const tokenStorage = {
     _onForceLogout?.();
   },
 
-  // --- Persistência assíncrona ---
   async saveSession(token: string, user: string): Promise<void> {
     _token = token;
     await Promise.all([

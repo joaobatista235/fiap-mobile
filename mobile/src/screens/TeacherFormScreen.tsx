@@ -16,7 +16,6 @@ import { Stack, useRouter } from "expo-router";
 import { UserService, type UpdateTeacherPayload } from "@/src/api/users";
 
 interface Props {
-  /** ID do professor a editar. Undefined = modo criação. */
   teacherId?: string;
 }
 
@@ -33,7 +32,6 @@ export default function TeacherFormScreen({ teacherId }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Edição: carrega dados do professor.
   useEffect(() => {
     if (!isEditing) return;
 

@@ -60,7 +60,6 @@ export function usePosts() {
   return { ...state, refresh: fetch, create, update, remove };
 }
 
-// Hook para post individual — usado em detalhe e edição.
 export function usePost(id: number) {
   const [post, setPost] = useState<Post | null>(null);
   const [isLoading, setIsLoading] = useState(false);

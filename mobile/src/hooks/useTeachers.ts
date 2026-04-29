@@ -28,7 +28,6 @@ export function useTeachers() {
     setState((s) => ({ ...s, isLoading: true, error: null }));
     try {
       const all = await UserService.getAll();
-      // Apenas professores (ADMIN)
       const teachers = all.filter((u) => u.role === "ADMIN");
       setState((s) => ({ ...s, teachers, isLoading: false, page: 0 }));
     } catch {

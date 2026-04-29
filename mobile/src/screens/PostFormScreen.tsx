@@ -17,7 +17,6 @@ import { PostService, type UpdatePostPayload } from "@/src/api/posts";
 import type { Post } from "@/src/types";
 
 interface Props {
-  /** Se fornecido, entra em modo de edição — busca e pre-popula o post. */
   postId?: number;
 }
 
@@ -31,7 +30,6 @@ export default function PostFormScreen({ postId }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Edição: carrega o post e preenche o formulário.
   useEffect(() => {
     if (!isEditing) return;
 

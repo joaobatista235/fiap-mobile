@@ -31,14 +31,13 @@ const initialState: AuthState = {
 
 export const AuthContext = createContext<AuthContextType>({
   ...initialState,
-  signIn: async () => {},
-  signOut: async () => {},
+  signIn: async () => { },
+  signOut: async () => { },
 });
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const [state, setState] = useState<AuthState>(initialState);
 
-  // Restaura sessão persistida ao iniciar o app.
   useEffect(() => {
     tokenStorage
       .restoreSession()
@@ -65,7 +64,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
     setState({ user: null, token: null, isAuthenticated: false, isLoading: false });
   }, []);
 
-  // Registra signOut como callback para o axios disparar no 401.
   useEffect(() => {
     tokenStorage.registerLogoutCallback(signOut);
   }, [signOut]);
