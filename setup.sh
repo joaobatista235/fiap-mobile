@@ -72,10 +72,11 @@ DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postsdb" \
     npx prisma migrate deploy
 ok "Migrações aplicadas com sucesso."
 
-step "[6/6] Rodando seed (usuário admin padrão)..."
+step "[6/6] Rodando seed dentro do container (evita conflito de binários Windows/Linux)..."
 cd "$BACKEND_DIR"
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postsdb" \
-    npx tsx prisma/seed.ts
+# tsx usa esbuild com binário nativo — precisa rodar no Linux do container,
+# não no WSL onde node_modules tem binários Windows instalados pelo PowerShell.
+$DC exec -T api npx tsx prisma/seed.ts
 ok "Seed concluído."
 
 # ── Resumo ─────────────────────────────────────────────────────────────────────
