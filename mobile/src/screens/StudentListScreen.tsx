@@ -46,7 +46,7 @@ export default function StudentListScreen() {
       try {
         await remove(id);
       } catch {
-        // alert já foi mostrado pelo UserCard
+        console.warn("Erro ao deletar aluno. Tente novamente.");
       }
     },
     [remove]

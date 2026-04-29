@@ -52,7 +52,7 @@ export default function TeacherListScreen() {
       try {
         await remove(id);
       } catch {
-        // alert já foi mostrado pelo UserCard
+        console.warn("Erro ao deletar professor. Tente novamente.");
       }
     },
     [remove]
