@@ -31,28 +31,28 @@ else
     warn "Pulado (Docker não disponível)."
 fi
 
-# ── 2. Remove node_modules — backend ──────────────────────────────────────────
-step "[2/3] Removendo node_modules..."
-
-if [ -d "$BACKEND_DIR/node_modules" ]; then
-    rm -rf "$BACKEND_DIR/node_modules"
-    ok "backend/node_modules removido."
-else
-    warn "backend/node_modules não encontrado, pulando."
-fi
-
-if [ -d "$MOBILE_DIR/node_modules" ]; then
-    # node_modules do mobile pode ter permissões Windows — usa PowerShell se disponível
-    if command -v powershell.exe &>/dev/null; then
-        WIN_MOD=$(wslpath -w "$MOBILE_DIR/node_modules")
-        powershell.exe -NoProfile -Command "Remove-Item -Recurse -Force '$WIN_MOD'" 2>/dev/null || rm -rf "$MOBILE_DIR/node_modules"
-    else
-        rm -rf "$MOBILE_DIR/node_modules"
+# ── Helper: remove diretório via PowerShell (permissões Windows) ──────────────
+remove_dir_win() {
+    local dir="$1"
+    local label="$2"
+    if [ ! -d "$dir" ]; then
+        warn "$label não encontrado, pulando."
+        return
     fi
-    ok "mobile/node_modules removido."
-else
-    warn "mobile/node_modules não encontrado, pulando."
-fi
+    if command -v powershell.exe &>/dev/null; then
+        local win_path
+        win_path=$(wslpath -w "$dir")
+        powershell.exe -NoProfile -Command "Remove-Item -Recurse -Force '$win_path'"
+    else
+        rm -rf "$dir"
+    fi
+    ok "$label removido."
+}
+
+# ── 2. Remove node_modules ────────────────────────────────────────────────────
+step "[2/3] Removendo node_modules..."
+remove_dir_win "$BACKEND_DIR/node_modules" "backend/node_modules"
+remove_dir_win "$MOBILE_DIR/node_modules"  "mobile/node_modules"
 
 # ── 3. Remove cache do Expo ────────────────────────────────────────────────────
 step "[3/3] Removendo cache do Expo..."
