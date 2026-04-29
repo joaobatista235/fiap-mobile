@@ -9,13 +9,13 @@ class UsersController {
   }
 
   async getById(req: Request, res: Response) {
-    const user = await usersService.getById(req.params.id);
+    const user = await usersService.getById(req.params.id as string);
     if (!user) return res.status(404).json({ message: "Usuário não encontrado" });
     return res.json(user);
   }
 
   async getByEmail(req: Request, res: Response) {
-    const user = await usersService.getByEmail(req.params.email);
+    const user = await usersService.getByEmail(req.params.email as string);
     if (!user) return res.status(404).json({ message: "Usuário não encontrado" });
     return res.json(user);
   }
@@ -32,7 +32,7 @@ class UsersController {
 
   async update(req: Request, res: Response) {
     try {
-      const updated = await usersService.update(req.params.id, req.body);
+      const updated = await usersService.update(req.params.id as string, req.body);
       return res.status(200).json(updated);
     } catch (error: any) {
       const status = error.message?.includes("Email") ? 409 : 404;
@@ -41,7 +41,7 @@ class UsersController {
   }
 
   async delete(req: Request, res: Response) {
-    const deleted = await usersService.delete(req.params.id);
+    const deleted = await usersService.delete(req.params.id as string);
     return res.json(deleted);
   }
 
