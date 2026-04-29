@@ -65,12 +65,18 @@ done
 echo ""
 ok "PostgreSQL pronto."
 
-# ── 5. Prisma — migrate deploy ─────────────────────────────────────────────────
-step "[5/5] Aplicando migrações Prisma..."
+# ── 5. Prisma — migrate + seed ────────────────────────────────────────────────
+step "[5/6] Aplicando migrações Prisma..."
 cd "$BACKEND_DIR"
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postsdb" \
     npx prisma migrate deploy
 ok "Migrações aplicadas com sucesso."
+
+step "[6/6] Rodando seed (usuário admin padrão)..."
+cd "$BACKEND_DIR"
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postsdb" \
+    npx tsx prisma/seed.ts
+ok "Seed concluído."
 
 # ── Resumo ─────────────────────────────────────────────────────────────────────
 echo -e "\n${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -79,6 +85,10 @@ echo ""
 echo "  Backend API : http://localhost:3000"
 echo "  Swagger     : http://localhost:3000/api-docs"
 echo "  Adminer     : http://localhost:8080"
+echo ""
+echo "  Login padrão (ADMIN):"
+echo "    e-mail : admin@admin.com"
+echo "    senha  : admin"
 echo ""
 echo "  Para rodar o app Expo Go:"
 echo "    → Abra o CMD do Windows dentro de mobile/"

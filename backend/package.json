@@ -10,12 +10,15 @@
     "migrate:dev": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
     "prisma:generate": "prisma generate",
-    
+    "seed": "tsx prisma/seed.ts",
     "db-push": "prisma db push"
   },
   "author": "",
   "license": "ISC",
   "description": "",
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
     "@prisma/client": "6.19.0",
     "bcrypt": "6.0.0",
