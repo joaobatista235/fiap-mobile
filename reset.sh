@@ -44,13 +44,17 @@ remove_dir_win() {
     fi
 
     local win_path
-    win_path=$(wslpath -w "$dir")
+    # tr -d '\r' remove carriage-return que wslpath pode incluir no output
+    win_path=$(wslpath -w "$dir" | tr -d '\r')
 
     # Encerra processos node que possam estar bloqueando arquivos nativos
     cmd.exe /c "taskkill /F /IM node.exe /T" 2>/dev/null || true
 
     # rd /s /q é o mais confiável no Windows para remoção recursiva forçada
-    cmd.exe /c "rd /s /q \"$win_path\""
+    cmd.exe /c "rd /s /q \"$win_path\"" || {
+        warn "rd falhou para $label — tentando com powershell..."
+        powershell.exe -NoProfile -Command "Remove-Item -LiteralPath '$win_path' -Recurse -Force" 2>/dev/null || true
+    }
 
     ok "$label removido."
 }
