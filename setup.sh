@@ -13,6 +13,20 @@ ok()   { echo -e "${GREEN}✔  $*${NC}"; }
 warn() { echo -e "${YELLOW}⚠  $*${NC}"; }
 fail() { echo -e "${RED}✖  $*${NC}"; exit 1; }
 
+# ── Helper: npm install via PowerShell (evita EACCES no filesystem Windows) ────
+npm_install_win() {
+    local dir="$1"
+    local label="$2"
+    if command -v powershell.exe &>/dev/null; then
+        local win_path
+        win_path=$(wslpath -w "$dir")
+        powershell.exe -NoProfile -Command "Set-Location '$win_path'; npm install"
+        ok "$label: dependências instaladas via PowerShell."
+    else
+        fail "PowerShell não encontrado. Execute 'npm install' manualmente no CMD do Windows dentro de $dir"
+    fi
+}
+
 # ── Verifica Docker Compose ────────────────────────────────────────────────────
 if docker compose version &>/dev/null; then
     DC="docker compose"
@@ -24,22 +38,11 @@ fi
 
 # ── 1. npm install — Backend ───────────────────────────────────────────────────
 step "[1/5] Instalando dependências do backend..."
-cd "$BACKEND_DIR"
-npm install
-ok "Backend: dependências instaladas."
+npm_install_win "$BACKEND_DIR" "Backend"
 
 # ── 2. npm install — Mobile ────────────────────────────────────────────────────
 step "[2/5] Instalando dependências do mobile..."
-# Metro exige que node_modules tenham permissões Windows; usar PowerShell quando disponível.
-if command -v powershell.exe &>/dev/null; then
-    WIN_MOBILE=$(wslpath -w "$MOBILE_DIR")
-    powershell.exe -NoProfile -Command "Set-Location '$WIN_MOBILE'; npm install"
-    ok "Mobile: dependências instaladas via PowerShell."
-else
-    cd "$MOBILE_DIR"
-    npm install
-    warn "Mobile instalado via WSL. Se o Metro apresentar erros de permissão, rode 'npm install' manualmente no CMD do Windows dentro de mobile/."
-fi
+npm_install_win "$MOBILE_DIR" "Mobile"
 
 # ── 3. Containers Docker ───────────────────────────────────────────────────────
 step "[3/5] Construindo e subindo os containers..."
