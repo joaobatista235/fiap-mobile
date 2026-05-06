@@ -1,4 +1,4 @@
-# FIAP Blog — Tech Challenge Fase 02
+# FIAP Blog — Tech Challenge Fase 04
 
 Projeto desenvolvido para a **Pós Tech em Full Stack Development** da FIAP.  
 Plataforma de blog educacional com autenticação por perfil, gestão de conteúdo e administração de usuários, composta por uma API REST em Node.js e um aplicativo mobile em React Native.
