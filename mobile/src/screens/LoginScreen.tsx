@@ -35,8 +35,8 @@ export default function LoginScreen() {
     try {
       await login(trimmedEmail, password);
     } catch (err: unknown) {
-      const msg =
-        (err as any)?.response?.data?.message ?? "Credenciais inválidas.";
+      const axiosMsg = (err as any)?.response?.data?.message;
+      const msg = axiosMsg ?? "Erro ao conectar com o servidor. Verifique sua conexão.";
       setError(msg);
     } finally {
       setIsSubmitting(false);

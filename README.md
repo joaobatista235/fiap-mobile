@@ -114,15 +114,25 @@ Ao final, o terminal exibe:
 
 ### 1.4 Iniciar o aplicativo mobile
 
-Abra o **CMD do Windows** (não o WSL) dentro da pasta `mobile/` e execute:
+> ⚠️ **ATENÇÃO — erro comum:** execute este passo **obrigatoriamente no PowerShell ou CMD do Windows**, nunca no terminal WSL (Ubuntu/Debian).  
+> Rodar o Metro Bundler via WSL impede que o Expo Go no celular consiga baixar o bundle JavaScript, resultando em erros de conexão como *"Failed to download remote update"* ou *"Something went wrong"* — mesmo que o celular esteja na mesma rede.
 
-```cmd
+Abra o **PowerShell ou CMD do Windows** (não o WSL) dentro da pasta `mobile/` e execute:
+
+```powershell
 npx expo start --clear
 ```
 
 Escaneie o QR code com o **Expo Go** no celular.
 
-> O Metro Bundler precisa rodar no Windows para que o Expo Go consiga acessar os arquivos com as permissões corretas. Rodá-lo via WSL causa erros de permissão (`EACCES`).
+**Resumo de qual terminal usar em cada etapa:**
+
+| Etapa | Terminal correto |
+|-------|-----------------|
+| `git clone` / `cp .env` / `bash setup.sh` / `bash reset.sh` | WSL (Ubuntu) |
+| `npx expo start` | PowerShell ou CMD do Windows |
+
+> **Por que essa separação?** O WSL não expõe o Metro Bundler nas interfaces de rede do Windows. O celular tenta se conectar ao IP da máquina Windows — se o Metro estiver rodando no WSL, a porta simplesmente não existe no lado Windows e o download falha.
 
 ---
 
